@@ -1,0 +1,23 @@
+{
+  "name": "emshw12",
+  "version": "1.0.0",
+  "description": "Employee management system using SQL, Node, and Inquirer",
+  "main": "employees.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cardeens/emshw12.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cardeens/emshw12/issues"
+  },
+  "homepage": "https://github.com/cardeens/emshw12#readme",
+  "dependencies": {
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
