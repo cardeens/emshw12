@@ -12,3 +12,5 @@ INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Helen", "Parinsky", 1, null), ("Rachel", "McAdams", 2, 1), ("Riley", "Reid", 2, 1), ("Billy", "DaNerd", 3, null), ("Billy", "Eilish", 4, 4), ("Fineis", "Eilish", 4, 4), ("Cheech", "Chong", 5, 4), ("Paul", "Galle", 6, null), ("Dat", "Boi", 7, 8), ("JJ", "Cardenas", 8, null), ("Kodak", "Black", 9, null), ("Kanye", "West", 9, null), ("Xing", "Bong", 4, 4);
 
 SELECT * FROM employees;
+
+

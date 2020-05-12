@@ -6,13 +6,13 @@ var connection = mysql.createConnection({
   host: "localhost",
 
   // Your port; if not 3306
-  port: 1017,
+  port: 3306,
 
   // Your username
   user: "root",
 
   // Your password
-  password: "",
+  password: "Crossfire10!",
   database: "employee_DB"
 });
 
@@ -22,7 +22,3 @@ connection.connect(function(err) {
   // run the start function after the connection is made to prompt the user
   start();
 });
-
-function start() {
-    console.log ("Yea baby this shit WORKIN")
-}
