@@ -70,13 +70,37 @@ const viewData = (answers) => {
             choices: [
                 "Employee",
                 "Role",
-                "Employee"
+                "Department"
             ]
         }
     ]).then((answers) => {
         switch (answers.viewData) {
             case "Employee":
-                
+                connection.query("SELECT id, first_name, last_name, role_id, manager_id FROM employees",
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    start();
+                });
+                break
+
+                case "Role":
+                connection.query("SELECT id, title, salary, department_id FROM roles",
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    start();
+                });
+                break
+
+                case "Department":
+                connection.query("SELECT id, name FROM departments",
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    start();
+                });
+                break
         }
 })
 }
