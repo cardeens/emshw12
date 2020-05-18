@@ -34,7 +34,6 @@ const start = () => {
                 choices: [
                     "View data",
                     "Add data",
-                    "Update data",
                     "Delete data",
                     "Quit"
                 ]
@@ -44,18 +43,15 @@ const start = () => {
             switch (answers.start) {
                 case "View data":
                     viewData(answers);
-                    break;
+                    break
                 case "Add data":
                     addData(answers);
-                    break;
-                case "Update data":
-                    updateData(answers);
-                    break;
+                    break
                 case "Delete data":
                     deleteFields(answers);
-                    break;
+                    break
                 case "Quit":
-                    process.quit();
+                    process.exit();
 
             }
         })
@@ -77,32 +73,32 @@ const viewData = (answers) => {
         switch (answers.viewData) {
             case "Employee":
                 connection.query("SELECT id, first_name, last_name, role_id, manager_id FROM employees",
-                function (err, res) {
-                    if (err) throw err;
-                    console.table(res);
-                    start();
-                });
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        start();
+                    });
                 break
 
-                case "Role":
+            case "Role":
                 connection.query("SELECT id, title, salary, department_id FROM roles",
-                function (err, res) {
-                    if (err) throw err;
-                    console.table(res);
-                    start();
-                });
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        start();
+                    });
                 break
 
-                case "Department":
+            case "Department":
                 connection.query("SELECT id, name FROM departments",
-                function (err, res) {
-                    if (err) throw err;
-                    console.table(res);
-                    start();
-                });
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        start();
+                    });
                 break
         }
-})
+    })
 }
 
 const addData = (answers) => {
@@ -251,8 +247,10 @@ const addData = (answers) => {
                             connection.query("SELECT id, name FROM departments",
                                 function (err, res) {
                                     if (err) throw err;
-                                    start();
+                                    console.table(res)
                                     console.log("Added department!")
+                                    start();
+                                    
                                 })
 
                         })
@@ -266,3 +264,104 @@ const addData = (answers) => {
     }
     )
 };
+
+const deleteFields = (answers) => {
+    inquirer.prompt([
+        {
+            name: "deleteChoice",
+            message: "What would you like to delete from?",
+            type: "list",
+            choices: [
+                "Employees",
+                "Roles",
+                "Departments"
+            ]
+        }
+    ]).then((answers) => {
+        switch (answers.deleteChoice) {
+            case "Employees":
+                connection.query("SELECT id, first_name, last_name FROM employees",
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        inquirer.prompt(
+                            {
+                                name: "deleteEmployee",
+                                message: "Enter ID of employee you'd like to fire:",
+                                type: "number"
+                            }
+                        ).then((answer) => {
+                            connection.query("DELETE FROM employees WHERE ?",
+                                { id: answer.deleteEmployee },
+                                function (err, res) {
+                                    if (err) throw err;
+                                    connection.query("SELECT id, first_name, last_name FROM employees",
+                                        function (err, res) {
+                                            console.log("Deleted");
+                                            console.table(res);
+                                            start();
+                                        })
+                                })
+                        })
+                    }
+                )
+                break
+            case "Departments":
+                connection.query("SELECT id, name FROM departments",
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        inquirer.prompt(
+                            {
+                                name: "deleteDept",
+                                message: "Enter ID of department you'd like to delete:",
+                                type: "number"
+                            }
+                        ).then((answer) => {
+                            connection.query("DELETE FROM departments WHERE ?",
+                                { id: answer.deleteDept },
+                                function (err, res) {
+                                    if (err) throw err;
+                                    connection.query("SELECT id, name FROM departments",
+                                        function (err, res) {
+                                            console.table(res);
+                                            console.log("Deleted");
+                                            start();
+                                        })
+                                })
+                        })
+                    }
+                )
+                break
+            case "Roles":
+                connection.query("SELECT id, title FROM roles",
+                    function (err, res) {
+                        if (err) throw err;
+                        console.table(res);
+                        inquirer.prompt(
+                            {
+                                name: "deleteRole",
+                                message: "Enter ID of role you'd like to delete:",
+                                type: "number"
+                            }
+                        ).then((answer) => {
+                            connection.query("DELETE FROM roles WHERE ?",
+                                { id: answer.deleteRole },
+                                function (err, res) {
+                                    if (err) throw err;
+                                    connection.query("SELECT roles.id, roles.title departments.name FROM roles INNER JOIN departments on departments.id = roles.department_id ",
+                                        function (err, res) {
+                                            console.log("Deleted");
+                                            console.table(res);
+                                            start();
+                                        })
+                                })
+                        })
+                    }
+                )
+                break
+
+        }
+
+    })
+}
